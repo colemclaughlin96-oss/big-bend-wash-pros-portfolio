@@ -1,0 +1,1 @@
+ALTER TABLE `settings` ADD `ghlStageNewLeadId` varchar(80);

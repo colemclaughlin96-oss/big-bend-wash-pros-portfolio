@@ -1,0 +1,1 @@
+ALTER TABLE `quotes` MODIFY COLUMN `status` enum('pending','accepted','declined','expired') NOT NULL DEFAULT 'pending';

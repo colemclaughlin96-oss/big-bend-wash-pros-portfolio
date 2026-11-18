@@ -1,0 +1,63 @@
+CREATE TABLE `quotes` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`publicToken` varchar(32) NOT NULL,
+	`customerName` varchar(200) NOT NULL,
+	`customerEmail` varchar(320),
+	`customerPhone` varchar(40),
+	`propertyAddress` text,
+	`propertyCity` varchar(120),
+	`propertyState` varchar(60),
+	`propertyZip` varchar(20),
+	`serviceSelections` json NOT NULL,
+	`computedTiers` json NOT NULL,
+	`brandSnapshot` json NOT NULL,
+	`status` enum('pending','accepted','expired') NOT NULL DEFAULT 'pending',
+	`selectedTierKey` varchar(64),
+	`expiresAt` timestamp NOT NULL,
+	`acceptedAt` timestamp,
+	`emailSentAt` timestamp,
+	`smsSentAt` timestamp,
+	`ghlSyncedAt` timestamp,
+	`ghlStatus` varchar(40),
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `quotes_id` PRIMARY KEY(`id`),
+	CONSTRAINT `quotes_publicToken_unique` UNIQUE(`publicToken`)
+);
+--> statement-breakpoint
+CREATE TABLE `services` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(200) NOT NULL,
+	`description` text,
+	`baseRate` decimal(10,2) NOT NULL DEFAULT '0',
+	`variableKey` varchar(64) NOT NULL DEFAULT 'flat',
+	`variableLabel` varchar(120) NOT NULL DEFAULT 'Quantity',
+	`perUnitRate` decimal(10,4) NOT NULL DEFAULT '0',
+	`minPrice` decimal(10,2) NOT NULL DEFAULT '0',
+	`active` boolean NOT NULL DEFAULT true,
+	`sortOrder` int NOT NULL DEFAULT 0,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `services_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `settings` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`companyName` varchar(200) NOT NULL DEFAULT 'Example Home Services',
+	`companyEmail` varchar(320),
+	`companyPhone` varchar(40),
+	`logoUrl` text,
+	`primaryColor` varchar(20) NOT NULL DEFAULT '#0f4c5c',
+	`accentColor` varchar(20) NOT NULL DEFAULT '#e9b949',
+	`formHeadline` varchar(200) NOT NULL DEFAULT 'Get Your Instant Quote',
+	`formSubheadline` text,
+	`quoteExpiryDays` int NOT NULL DEFAULT 30,
+	`tiers` json NOT NULL,
+	`ghlWebhookUrl` text,
+	`ghlEnabled` boolean NOT NULL DEFAULT false,
+	`autoDeliverEmail` boolean NOT NULL DEFAULT true,
+	`autoDeliverSms` boolean NOT NULL DEFAULT false,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `settings_id` PRIMARY KEY(`id`)
+);

@@ -1,0 +1,1 @@
+ALTER TABLE `quotes` ADD `hcpJobId` varchar(80);
